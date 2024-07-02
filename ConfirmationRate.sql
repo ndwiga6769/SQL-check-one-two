@@ -25,7 +25,7 @@
 -- Each row of this table indicates that the user with ID user_id requested a confirmation message at time_stamp and that confirmation message was either confirmed ('confirmed') or expired without confirming ('timeout')
 
 -- # Write your MySQL query statement below
-SELECT user_id, ROUND(AVG (action <=> 'confirmed' ),4) as confirmation_rate
-FROM Signups
-LEFT JOIN Confirmations using (user_id)
-GROUP by user_id;
+SELECT s.user_id, ROUND(AVG(IF (c.action = "confirmed" 1,0,)), 2)
+FROM Signups s
+LEFT JOIN Confirmations c ON s.user_id = c.user_id
+GROUP BY c.user_id;
